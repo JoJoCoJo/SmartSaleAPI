@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'TestController@welcome');
+//Listar todos los productos disponibles en la BD
+Route::get('/products', 'ProductController@index');
+//Insertar un producto
+Route::post('/products/create', 'ProductController@store');
