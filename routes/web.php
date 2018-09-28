@@ -12,7 +12,14 @@
 */
 
 Route::get('/', 'TestController@welcome');
-//Listar todos los productos disponibles en la BD
-Route::get('/products', 'ProductController@index');
-//Insertar un producto
-Route::post('/products/create', 'ProductController@store');
+
+Route::prefix('api/v1')->group(function () {
+    Route::get('/sup', function () {
+        return 'suuuuuuuuuuuuuuuuuuuuuuuup?';
+    });
+
+    //Listar todos los productos disponibles en la BD
+    Route::get('/products', 'ProductController@index');
+    //Insertar un producto
+    Route::post('/products/create', 'ProductController@store');
+});
