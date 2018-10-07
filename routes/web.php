@@ -16,11 +16,11 @@
 |	-- Para crear un modelo y una migración al mismo tiempo:
 |	$ php artisan make:model <AwesomeModelName> -m
 |	
-|	-- Para resetear las migraciones se utiliza:
-|	$ php artisan migrate:reset (TODAS LAS MIGRACIONES)
-|
 |	-- Ejecutar migraciones
 |	$ php artisan migrate
+|
+|	-- Para resetear las migraciones se utiliza:
+|	$ php artisan migrate:reset (TODAS LAS MIGRACIONES)
 |
 |	NOTA (2): El modelo se toca para cuando se hacen las consultas con Eloquent
 |	(relaciones), las relaciones como tal de la DB es en archivo de la migración
