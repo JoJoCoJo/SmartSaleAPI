@@ -34,6 +34,6 @@ Route::get('/', function () {
 
 Route::prefix('api/v1')->group(function () {
 	Route::prefix('/categorias')->group(function () {
-		Route::get('/{variable}', function($variable) { return $variable; });
+		Route::get('/', 'CategoriesController@getAll');
 	});
 });
