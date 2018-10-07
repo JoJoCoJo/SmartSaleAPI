@@ -46,4 +46,8 @@ Route::prefix('api/v1')->group(function () {
 	Route::prefix('/categorias')->group(function () {
 		Route::get('/', 'CategoriesController@getAll');
 	});
+
+	Route::prefix('/productos')->group(function () {
+		Route::get('/', 'ProductsController@getAll');
+	});
 });
