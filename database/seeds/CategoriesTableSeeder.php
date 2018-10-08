@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Category;
 use App\Product;
 use App\User;
+use App\Sale;
 
 class CategoriesTableSeeder extends Seeder {
     /**
@@ -14,12 +15,10 @@ class CategoriesTableSeeder extends Seeder {
     public function run() {
         //factory(Category::class, 10)->create();
 
-    	$categories = factory(Category::class, 10)->create();
-    	$categories->each(function($category) {
-			$products = factory(Product::class, 10)->make();
-			$category->products()->saveMany($products);
-		});
-
+        factory(Category::class, 10)->create();
+        factory(Product::class, 100)->create();
         factory(User::class, 50)->create();
+        factory(Sale::class, 500)->create();
+
     }
 }

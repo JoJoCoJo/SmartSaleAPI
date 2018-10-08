@@ -8,5 +8,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'name' => $faker->word,
         'price' => $faker->randomFloat(2, 10, 500),
         'image' => $faker->imageUrl(100, 100),
+        'category_id' => $faker->numberBetween(1, 10)
     ];
 });

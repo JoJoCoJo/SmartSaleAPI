@@ -19,6 +19,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'last_names' => $faker->lastName,
         'email' => $faker->unique()->safeEmail,
         'password' => $faker->password,
-        'telephone' => $faker->phoneNumber
+        'telephone' => $faker->tollFreePhoneNumber
     ];
 });
