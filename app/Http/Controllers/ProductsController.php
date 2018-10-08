@@ -9,7 +9,7 @@ class ProductsController extends Controller
 {
     //
     public function getAll () {
-    	$product = Product::with('category')->get();
+    	$product = Product::with('category')->with('sales')->get();
     	return $product;
     }
 }

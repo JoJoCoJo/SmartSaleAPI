@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Category;
 use App\Product;
+use App\User;
 
 class CategoriesTableSeeder extends Seeder {
     /**
@@ -19,5 +20,6 @@ class CategoriesTableSeeder extends Seeder {
 			$category->products()->saveMany($products);
 		});
 
+        factory(User::class, 50)->create();
     }
 }

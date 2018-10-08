@@ -14,7 +14,18 @@ class CreateSalesTable extends Migration
     public function up()
     {
         Schema::create('sales', function (Blueprint $table) {
-            $table->increments('id');
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
+            $table->increments('id_sale');
+            $table->date('date_sale');
+            $table->integer('units_sales');
+            $table->tinyInteger('type_sale');
+            $table->unsignedInteger('product_id');
+            $table->foreign('product_id')->references('id_product')->on('products');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id_user')->on('users');
+            $table->unsignedInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id_category')->on('categories');
             $table->timestamps();
         });
     }

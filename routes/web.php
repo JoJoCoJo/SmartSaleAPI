@@ -31,7 +31,7 @@
 |   $ php artisan db:seed
 |	
 |   -- Ejecutar el reset y los seeder después.
-|   $ php artisan migrate:reset --seed
+|   $ php artisan migrate:refresh --seed
 |
 |	para agregar una ruta
 |	Route::get('/<Ruta>', '<AwesomeControllerName>@functionOnController');
