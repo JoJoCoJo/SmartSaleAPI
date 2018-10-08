@@ -12,6 +12,6 @@ class Product extends Model
     }
 
     public function sales () {
-    	return $this->hasMany(Sale::class);
+    	return $this->hasMany(Sale::class, 'product_id', 'id_product');
     }
 }
