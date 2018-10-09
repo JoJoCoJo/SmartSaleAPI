@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     public function sales () {
-    	return $this->hasMany(Sale::class);
+    	return $this->hasMany(Sale::class, 'user_id', 'id_user');
     }
 }

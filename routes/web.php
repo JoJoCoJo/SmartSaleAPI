@@ -36,6 +36,13 @@
 |	para agregar una ruta
 |	Route::get('/<Ruta>', '<AwesomeControllerName>@functionOnController');
 |
+|	-- Para las relaciones en eloquent cuando no se deja predefinido el id_table como 'id', 
+|	se tiene que especificar el id en las relaciones de los modelos.
+|	$this->hasMany('Model::class', 'foreign_key', 'other_key');
+|	$this->hasOne('Model::class', 'foreign_key', 'other_key');
+|	$this->belongsTo('Model::class', 'foreign_key', 'other_key');
+|	$this->belongsToMany('Model::class', 'foreign_key', 'other_key');
+|
 */
 
 Route::get('/', function () {
