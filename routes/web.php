@@ -52,6 +52,10 @@ Route::get('/', function () {
 Route::prefix('api/v1')->group(function () {
 	Route::prefix('/categorias')->group(function () {
 		Route::get('/', 'CategoriesController@getAll');
+		Route::get('/*', 'CategoriesController@getAllWithAll');
+		Route::get('/productos', 'CategoriesController@getAllWithProducts');
+		Route::get('/ventas', 'CategoriesController@getAllWithSales');
+
 	});
 
 	Route::prefix('/productos')->group(function () {
