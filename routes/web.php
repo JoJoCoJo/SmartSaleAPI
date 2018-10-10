@@ -56,6 +56,7 @@ Route::prefix('api/v1')->group(function () {
 		Route::get('/products', 'CategoriesController@getAllWithProducts');
 		Route::get('/sales', 'CategoriesController@getAllWithSales');
 		Route::get('/create', 'CategoriesController@create');
+		Route::get('/delete', 'CategoriesController@delete');
 	});
 
 	Route::prefix('/products')->group(function () {
