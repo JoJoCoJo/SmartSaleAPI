@@ -50,15 +50,15 @@ Route::get('/', function () {
 });
 
 Route::prefix('api/v1')->group(function () {
-	Route::prefix('/categorias')->group(function () {
+	Route::prefix('/categories')->group(function () {
 		Route::get('/', 'CategoriesController@getAll');
 		Route::get('/*', 'CategoriesController@getAllWithAll');
-		Route::get('/productos', 'CategoriesController@getAllWithProducts');
-		Route::get('/ventas', 'CategoriesController@getAllWithSales');
-
+		Route::get('/products', 'CategoriesController@getAllWithProducts');
+		Route::get('/sales', 'CategoriesController@getAllWithSales');
+		Route::get('/create', 'CategoriesController@create');
 	});
 
-	Route::prefix('/productos')->group(function () {
+	Route::prefix('/products')->group(function () {
 		Route::get('/', 'ProductsController@getAll');
 	});
 });
