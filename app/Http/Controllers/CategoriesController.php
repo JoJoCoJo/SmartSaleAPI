@@ -117,10 +117,10 @@ class CategoriesController extends Controller {
 			$this->response['errors'] 	= $validateDelete->errors();
 			$this->response['message'] 	= 'Han ocurrido algunos errores.';
 		}else{
+
+			$findCategoryToDelete = $this->Category::where('id_category', '=', $request->id_category);
 			
-			$findCategory = $this->Category::where('id_category', '=', $request->id_category);
-			
-			if ($findCategory->delete()) {
+			if ($findCategoryToDelete->delete()) {
 				$this->codeResponse 		= 201;
 				$this->response['code']		= $this->codeResponse;
 				$this->response['message'] 	= 'Registro eliminado con éxito.';
@@ -128,6 +128,52 @@ class CategoriesController extends Controller {
 				$this->codeResponse 		= 500;
 				$this->response['code']		= $this->codeResponse;
 				$this->response['message'] 	= 'No se pudo eliminar el registro, intentelo más tarde.';
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function update (Request $request) {
+
+		$rules = [
+			'id_category' => 'required|numeric',
+		];
+
+		$messages = [
+			'id_category.required' => 'El id es requerido.',
+			'id_category.numeric' => 'El id debe ser númerico.',
+		];
+
+		$validateUpdateID = Validator::make($request->all(), $rules, $messages);
+
+		if ($validateUpdateID->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateUpdateID->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$validateUpdateData = Validator::make($request->all(), $this->rules, $this->messages);
+
+			if ($validateUpdateData->fails()) {
+				$this->codeResponse			= 422;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['errors'] 	= $validateUpdateData->errors();
+				$this->response['message'] 	= 'Han ocurrido algunos errores.';
+			}else{
+				$findCategoryToUpdate 				= $this->Category::where('id_category', '=', $request->id_category);
+				/*$findCategoryToUpdate->name 		= $request->input('name');
+				$findCategoryToUpdate->description 	= $request->input('description');*/
+
+				if ($findCategoryToUpdate->update(['name' => $request->input('name'), 'description' => $request->input('description')])) {
+					$this->codeResponse			= 202;
+					$this->response['code'] 	= $this->codeResponse;
+					$this->response['message'] 	= 'Regigstro actualizado con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo actualizar el registro, intentelo más tarde.';
+				}
 			}
 		}
 
