@@ -72,12 +72,12 @@ class CategoriesController extends Controller {
 
 	public function create (Request $request) {
 
-		$validateData = Validator::make($request->all(), $this->rules, $this->messages);
+		$validateCreate = Validator::make($request->all(), $this->rules, $this->messages);
 
-		if ($validateData->fails()) {
+		if ($validateCreate->fails()) {
 			$this->codeResponse			= 422;
 			$this->response['code'] 	= $this->codeResponse;
-			$this->response['errors'] 	= $validateData->errors();
+			$this->response['errors'] 	= $validateCreate->errors();
 			$this->response['message'] 	= 'Han ocurrido algunos errores.';
 		}else{
 			$newCategory = new Category();
@@ -92,6 +92,42 @@ class CategoriesController extends Controller {
 			}else{
 				$this->codeResponse 		= 500;
 				$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function delete (Request $request) {
+
+		$rules = [
+			'id_category' => 'required|numeric',
+		];
+
+		$messages = [
+			'id_category.required' => 'El id es requerido.',
+			'id_category.numeric' => 'El id debe ser númerico.',
+		];
+
+		$validateDelete = Validator::make($request->all(), $rules, $messages);
+
+		if ($validateDelete->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateDelete->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			
+			$findCategory = $this->Category::where('id_category', '=', $request->id_category);
+			
+			if ($findCategory->delete()) {
+				$this->codeResponse 		= 201;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'Registro eliminado con éxito.';
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'No se pudo eliminar el registro, intentelo más tarde.';
 			}
 		}
 
