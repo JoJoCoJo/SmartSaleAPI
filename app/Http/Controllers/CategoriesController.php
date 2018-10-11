@@ -199,9 +199,17 @@ class CategoriesController extends Controller {
 				$this->response['errors'] 	= $validateUpdateData->errors();
 				$this->response['message'] 	= 'Han ocurrido algunos errores.';
 			}else{
-				$findCategoryToUpdate 				= $this->Category::where('id_category', '=', $request->id_category);
+				
+				$findCategoryToUpdate = $this->Category::where('id_category', '=', $request->id_category);
+				$dataToUpdate = [
+					'name' => $request->input('name')
+				];
+				
+				if ($request->input('description') !== NULL) {
+				 	$dataToUpdate['description'] = $request->input('description');
+				}
 
-				if ($findCategoryToUpdate->update(['name' => $request->input('name'), 'description' => $request->input('description')])) {
+				if ($findCategoryToUpdate->update($dataToUpdate)) {
 					$this->codeResponse			= 202;
 					$this->response['code'] 	= $this->codeResponse;
 					$this->response['message'] 	= 'Regigstro actualizado con éxito.';
