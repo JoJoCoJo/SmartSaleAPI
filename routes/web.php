@@ -49,7 +49,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// main url to the api for the project
 Route::prefix('api/v1')->group(function () {
+
+	//main url and urls to CRUD data on table categories
 	Route::prefix('/categories')->group(function () {
 		Route::get('/', 'CategoriesController@getAll');
 		Route::get('/*', 'CategoriesController@getAllWithAll');
