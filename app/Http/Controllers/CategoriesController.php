@@ -86,7 +86,13 @@ class CategoriesController extends Controller {
 
 	public function create (Request $request) {
 
-		$validateCreate = Validator::make($request->all(), $this->rules, $this->messages);
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $this->rules,
+			'messages' => $this->messages
+		];
+
+		$validateCreate = $this->Validator($params);
 
 		if ($validateCreate->fails()) {
 			$this->codeResponse			= 422;
@@ -123,7 +129,13 @@ class CategoriesController extends Controller {
 			'id_category.numeric' => 'El id debe ser númerico.',
 		];
 
-		$validateDelete = Validator::make($request->all(), $rules, $messages);
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateDelete = $this->Validator($params);
 
 		if ($validateDelete->fails()) {
 			$this->codeResponse			= 422;
@@ -159,7 +171,13 @@ class CategoriesController extends Controller {
 			'id_category.numeric' => 'El id debe ser númerico.',
 		];
 
-		$validateUpdateID = Validator::make($request->all(), $rules, $messages);
+		$paramsId = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateUpdateID = $this->Validator($paramsId);
 
 		if ($validateUpdateID->fails()) {
 			$this->codeResponse			= 422;
@@ -167,7 +185,13 @@ class CategoriesController extends Controller {
 			$this->response['errors'] 	= $validateUpdateID->errors();
 			$this->response['message'] 	= 'Han ocurrido algunos errores.';
 		}else{
-			$validateUpdateData = Validator::make($request->all(), $this->rules, $this->messages);
+			$paramsUpdateData = [
+				'dataToValidate' => $request->all(),
+				'rules' => $this->rules,
+				'messages' => $this->messages
+			];
+
+			$validateUpdateData = $this->Validator($paramsUpdateData);
 
 			if ($validateUpdateData->fails()) {
 				$this->codeResponse			= 422;
@@ -176,8 +200,6 @@ class CategoriesController extends Controller {
 				$this->response['message'] 	= 'Han ocurrido algunos errores.';
 			}else{
 				$findCategoryToUpdate 				= $this->Category::where('id_category', '=', $request->id_category);
-				/*$findCategoryToUpdate->name 		= $request->input('name');
-				$findCategoryToUpdate->description 	= $request->input('description');*/
 
 				if ($findCategoryToUpdate->update(['name' => $request->input('name'), 'description' => $request->input('description')])) {
 					$this->codeResponse			= 202;
