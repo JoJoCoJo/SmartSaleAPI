@@ -26,8 +26,8 @@ class CategoriesController extends Controller {
     	'name.required' => 'El nombre no puede quedar vacío.',
     	'name.min' => 'El nombre debe tener al menos 5 carácteres.',
     	'name.max' => 'El nombre debe tener máximo 50 carácteres.',
-    	'description.min' => 'La descripción debe tener al menos 10 carácteres.',
-    	'description.max' => 'La descripción debe tener al máximo 150 carácteres.'
+    	'description.min' => 'La descripción debe tener menos 10 carácteres.',
+    	'description.max' => 'La descripción debe tener máximo 150 carácteres.'
     ];
 
     private function Validator (Array $params) {
