@@ -30,6 +30,20 @@ class CategoriesController extends Controller {
     	'description.max' => 'La descripción debe tener al máximo 150 carácteres.'
     ];
 
+    private function Validator (Array $params) {
+    	if (!isset($params['dataToValidate'])) {
+    		return 'dataToValidate is requerid.';
+    	}elseif (!isset($params['rules'])) {
+    		return 'rules is requerid.';
+    	}else{
+    		if (isset($params['messages'])) {
+    			return Validator::make($params['dataToValidate'], $params['rules'], $params['messages']);
+    		}else{
+    			return Validator::make($params['dataToValidate'], $params['rules']);
+    		}
+    	}
+    }
+
     // Get all categories without relationships
     public function getAll () {
     	$this->codeResponse = 200;
