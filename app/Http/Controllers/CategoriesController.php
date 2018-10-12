@@ -144,7 +144,7 @@ class CategoriesController extends Controller {
 			$this->response['message'] 	= 'Han ocurrido algunos errores.';
 		}else{
 
-			$findCategoryToDelete = $this->Category::where('id_category', '=', $request->id_category);
+			$findCategoryToDelete = $this->Category::find($request->id_category);
 			
 			if ($findCategoryToDelete->delete()) {
 				$this->codeResponse 		= 201;
