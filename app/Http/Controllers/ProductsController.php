@@ -20,7 +20,7 @@ class ProductsController extends Controller {
 	// This indicates to the validator what have to validate.
 	private $rules = [
 		'name' => 'required|min:3|max:50',
-		'price' => 'required|regex:/([0-9]{1,5}\.[0-9]{1,2})/',
+		'price' => 'required|regex:/([0-9]{1,14}\.[0-9]{1,2})/',
 		'image' => 'max:100',
 		'category_id' => 'nullable|integer'
 	];
