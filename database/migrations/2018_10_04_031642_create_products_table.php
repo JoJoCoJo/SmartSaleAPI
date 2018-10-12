@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('id_product');
             $table->string('name', 50);
-            $table->decimal('price', 5, 2);
+            $table->decimal('price', 16, 2);
             $table->string('image', 100)->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id_category')->on('categories');
