@@ -14,13 +14,13 @@ class CategoriesController extends Controller {
 	];
 
     private $codeResponse = null;
-    
+
     private $Category = Category::class;
 
     // This indicates to the validator what have to validate.
     private $rules = [
     	'name' => 'required|min:5|max:50',
-    	'description' => 'min:10|max:150'
+    	'description' => 'nullable|min:10|max:150'
     ];
 
     //This indicates to the validator what messages to show when an error occurs.
