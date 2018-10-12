@@ -8,11 +8,13 @@ use App\Category;
 
 class CategoriesController extends Controller {
     
-    private $response = array(
-			'code' 		=>	null,
-			'message'	=>	''
-		);
+    private $response = [
+		'code' 		=>	null,
+		'message'	=>	''
+	];
+
     private $codeResponse = null;
+    
     private $Category = Category::class;
 
     // This indicates to the validator what have to validate.
