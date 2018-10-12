@@ -59,4 +59,39 @@ class ProductsController extends Controller {
 
 		return response()->json($this->response, $this->codeResponse);
 	}
+
+	public function create (Request $request) {
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $this->rules,
+			'messages' => $this->messages
+		];
+
+		$validateCreate = $this->Validator($params);
+
+		if ($validateCreate->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateCreate->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$newProduct 			 = new Product();
+			$newProduct->name 		 = $request->input('name');
+			$newProduct->price 		 = $request->input('price');
+			$newProduct->image 		 = $request->input('image');
+			$newProduct->category_id = $request->input('category_id');
+
+			if ($newProduct->save()) {
+				$this->codeResponse 		= 201;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['data']		= $newProduct;
+				$this->response['message'] 	= 'Registro creado con éxito.';
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
 }
