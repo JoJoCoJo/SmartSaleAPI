@@ -14,7 +14,7 @@ class ProductsController extends Controller {
 	];
 
 	private $codeResponse = null;
-	
+
 	private $Product = Product::class;
 
 	// This indicates to the validator what have to validate.
@@ -48,5 +48,15 @@ class ProductsController extends Controller {
 				return Validator::make($params['dataToValidate'], $params['rules']);
 			}
 		}
+	}
+	
+	// Get all products without relationships
+	public function getAll () {
+		$this->codeResponse = 200;
+		$this->response['code'] 	= $this->codeResponse;
+		$this->response['data'] 	= $this->Product::All();
+		$this->response['message'] 	= 'Datos obtenido correctamente.';
+
+		return response()->json($this->response, $this->codeResponse);
 	}
 }
