@@ -121,12 +121,12 @@ class CategoriesController extends Controller {
 	public function delete (Request $request) {
 
 		$rules = [
-			'id_category' => 'required|numeric',
+			'id_category' => 'required|integer',
 		];
 
 		$messages = [
 			'id_category.required' => 'El id es requerido.',
-			'id_category.numeric' => 'El id debe ser númerico.',
+			'id_category.integer' => 'El id debe ser númerico.',
 		];
 
 		$params = [
@@ -163,12 +163,12 @@ class CategoriesController extends Controller {
 	public function update (Request $request) {
 
 		$rules = [
-			'id_category' => 'required|numeric',
+			'id_category' => 'required|integer',
 		];
 
 		$messages = [
 			'id_category.required' => 'El id es requerido.',
-			'id_category.numeric' => 'El id debe ser númerico.',
+			'id_category.integer' => 'El id debe ser númerico.',
 		];
 
 		$paramsId = [
