@@ -136,4 +136,86 @@ class ProductsController extends Controller {
 
 		return response()->json($this->response, $this->codeResponse);
 	}
+
+	public function update (Request $request) {
+		$rules = [
+			'id_product' => 'required|integer',
+		];
+
+		$messages = [
+			'id_product.required' => 'El id es requerido.',
+			'id_product.integer' => 'El id debe ser númerico.',
+		];
+
+		$paramsId = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateUpdateID = $this->Validator($paramsId);
+
+		if ($validateUpdateID->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateUpdateID->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+
+			$rulesToUpdateProduct = [
+				'name' => 'min:3|max:50',
+				'price' => 'regex:/([0-9]{1,14}\.[0-9]{1,2})/',
+				'image' => 'max:100',
+				'category_id' => 'nullable|integer'
+			];
+
+			$messagesToUpdateData = [
+				'name.min' => 'El nombre debe tener al menos 3 carácteres.',
+				'name.max' => 'El nombre debe tener máximo 50 carácteres.',
+				'price.regex' => 'El precio no tiene el formato correcto. ej. 57.99 ',
+				'image.max' => 'La url de la imagen debe tener máximo 100 carácteres.',
+				'category_id.integer' => 'El id debe ser númerico.'
+			];
+
+			$paramsUpdateData = [
+				'dataToValidate' => $request->all(),
+				'rules' => $rulesToUpdateProduct,
+				'messages' => $messagesToUpdateData
+			];
+
+			$validateUpdateData = $this->Validator($paramsUpdateData);
+
+			if ($validateUpdateData->fails()) {
+				$this->codeResponse			= 422;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['errors'] 	= $validateUpdateData->errors();
+				$this->response['message'] 	= 'Han ocurrido algunos errores.';
+			}else {
+				$findProductToUpdate = $this->Product::find($request->id_product);
+
+				if ($request->input('name') !== NULL) {
+				 	$findProductToUpdate->name = $request->input('name');
+				}elseif ($request->input('price') !== NULL) {
+				 	$findProductToUpdate->price = $request->input('price');
+				}elseif ($request->input('image') !== NULL) {
+				 	$findProductToUpdate->image = $request->input('image');
+				}elseif ($request->input('category_id') !== NULL) {
+				 	$findProductToUpdate->category_id = $request->input('category_id');
+				}
+
+				if ($findProductToUpdate->save()) {
+					$this->codeResponse			= 202;
+					$this->response['code'] 	= $this->codeResponse;
+					$this->response['message'] 	= 'Registro actualizado con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo actualizar el registro, intentelo más tarde.';
+				}
+			}
+		}
+
+
+		return response()->json($this->response, $this->codeResponse);
+	}
 }
