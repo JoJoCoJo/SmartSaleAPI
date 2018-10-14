@@ -195,11 +195,14 @@ class ProductsController extends Controller {
 
 				if ($request->input('name') !== NULL) {
 				 	$findProductToUpdate->name = $request->input('name');
-				}elseif ($request->input('price') !== NULL) {
+				}
+				if ($request->input('price') !== NULL) {
 				 	$findProductToUpdate->price = $request->input('price');
-				}elseif ($request->input('image') !== NULL) {
+				}
+				if ($request->input('image') !== NULL) {
 				 	$findProductToUpdate->image = $request->input('image');
-				}elseif ($request->input('category_id') !== NULL) {
+				}
+				if ($request->input('category_id') !== NULL) {
 				 	$findProductToUpdate->category_id = $request->input('category_id');
 				}
 
