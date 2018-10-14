@@ -8,17 +8,19 @@ use App\Category;
 
 class CategoriesController extends Controller {
     
-    private $response = array(
-			'code' 		=>	null,
-			'message'	=>	''
-		);
+    private $response = [
+		'code' 		=>	null,
+		'message'	=>	''
+	];
+
     private $codeResponse = null;
+
     private $Category = Category::class;
 
     // This indicates to the validator what have to validate.
     private $rules = [
     	'name' => 'required|min:5|max:50',
-    	'description' => 'min:10|max:150'
+    	'description' => 'nullable|min:10|max:150'
     ];
 
     //This indicates to the validator what messages to show when an error occurs.
@@ -121,12 +123,12 @@ class CategoriesController extends Controller {
 	public function delete (Request $request) {
 
 		$rules = [
-			'id_category' => 'required|numeric',
+			'id_category' => 'required|integer',
 		];
 
 		$messages = [
 			'id_category.required' => 'El id es requerido.',
-			'id_category.numeric' => 'El id debe ser númerico.',
+			'id_category.integer' => 'El id debe ser númerico.',
 		];
 
 		$params = [
@@ -144,7 +146,7 @@ class CategoriesController extends Controller {
 			$this->response['message'] 	= 'Han ocurrido algunos errores.';
 		}else{
 
-			$findCategoryToDelete = $this->Category::where('id_category', '=', $request->id_category);
+			$findCategoryToDelete = $this->Category::find($request->id_category);
 			
 			if ($findCategoryToDelete->delete()) {
 				$this->codeResponse 		= 201;
@@ -163,12 +165,12 @@ class CategoriesController extends Controller {
 	public function update (Request $request) {
 
 		$rules = [
-			'id_category' => 'required|numeric',
+			'id_category' => 'required|integer',
 		];
 
 		$messages = [
 			'id_category.required' => 'El id es requerido.',
-			'id_category.numeric' => 'El id debe ser númerico.',
+			'id_category.integer' => 'El id debe ser númerico.',
 		];
 
 		$paramsId = [
@@ -200,19 +202,17 @@ class CategoriesController extends Controller {
 				$this->response['message'] 	= 'Han ocurrido algunos errores.';
 			}else{
 				
-				$findCategoryToUpdate = $this->Category::where('id_category', '=', $request->id_category);
-				$dataToUpdate = [
-					'name' => $request->input('name')
-				];
-				
+				$findCategoryToUpdate = $this->Category::find($request->id_category);
+				$findCategoryToUpdate->name = $request->input('name');
+
 				if ($request->input('description') !== NULL) {
-				 	$dataToUpdate['description'] = $request->input('description');
+				 	$findCategoryToUpdate->description = $request->input('description');
 				}
 
-				if ($findCategoryToUpdate->update($dataToUpdate)) {
+				if ($findCategoryToUpdate->save()) {
 					$this->codeResponse			= 202;
 					$this->response['code'] 	= $this->codeResponse;
-					$this->response['message'] 	= 'Regigstro actualizado con éxito.';
+					$this->response['message'] 	= 'Registro actualizado con éxito.';
 				}else{
 					$this->codeResponse 		= 500;
 					$this->response['code']		= $this->codeResponse;

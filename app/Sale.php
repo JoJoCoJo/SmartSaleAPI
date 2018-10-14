@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
-{
+class Sale extends Model {
+
+	protected $primaryKey = 'id_sale';
+
     public function product () {
     	return $this->belongsTo(Product::class, 'product_id', 'id_product');
     }
