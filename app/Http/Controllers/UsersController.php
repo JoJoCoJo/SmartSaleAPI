@@ -20,22 +20,29 @@ class UsersController extends Controller {
     // This indicates to the validator what have to validate.
     private $rules = [
     	'names' => 'required|min:3|max:50',
-    	'last_names' => 'nullable|min:3|max:50',
-    	'email' => 'required|unique:users|min:5|max:80',
+    	'last_names' => 'nullable|max:50',
+    	'email' => 'required|email|unique:users|min:5|max:80',
     	'password' => 'required|min:7|max:15|alpha_num',
-    	'telephone' => 'nullable|numeric|min:7|max:15'
-    	//'category_id' => 'nullable|integer'
+    	'telephone' => 'nullable|numeric|digits_between:7,15'
     ];
 
     //This indicates to the validator what messages to show when an error occurs.
     private $messages = [
-    	/*'name.required' => 'El nombre no puede quedar vacío.',
-    	'name.min' => 'El nombre debe tener al menos 3 carácteres.',
-    	'name.max' => 'El nombre debe tener máximo 50 carácteres.',
-    	'price.required' => 'El precio no quedar vacío.',
-    	'price.regex' => 'El precio no tiene el formato correcto. ej. 57.99 ',
-    	'image.max' => 'La url de la imagen debe tener máximo 100 carácteres.',
-    	'category_id.integer' => 'El id debe ser númerico.'*/
+    	'names.required' => 'El nombre no puede quedar vacío.',
+    	'names.min' => 'El nombre debe tener al menos 3 carácteres.',
+    	'names.max' => 'El nombre debe tener máximo 50 carácteres.',
+    	'last_names.max' => 'Los apellidos deben tener máximo 50 carácteres.',
+    	'email.required' => 'El correo no puede quedar vacío.',
+    	'email.email' => 'El correo proporcionado no es válido.',
+    	'email.unique' => 'Este correo ya esta siendo usado.',
+    	'email.min' => 'El correo debe tener al menos 5 carácteres.',
+    	'email.max' => 'El correo debe tener máximo 80 carácteres.',
+    	'password.required' => 'La contraseña no puede quedar vacía.',
+    	'password.min' => 'La contraseña debe tener al menos 7 carácteres.',
+    	'password.max' => 'La contraseña debe tener máximo 15 carácteres.',
+    	'password.alpha_num' => 'La contraseña puede ser letras y números, no debe tener carácteres especiales. ej. (/*_.)',
+    	'telephone.numeric' => 'El teléfono sólo debe contener números.',
+    	'telephone.digits_between' => 'El teléfono debe tener al menos 7 números y máximo 15 números',
     ];
 
     private function Validator (Array $params) {
@@ -60,5 +67,43 @@ class UsersController extends Controller {
     	$this->response['message'] 	= 'Datos obtenido correctamente.';
 
     	return response()->json($this->response, $this->codeResponse);
+    }
+
+    public function create (Request $request) {
+    	$params = [
+    		'dataToValidate' => $request->all(),
+    		'rules' => $this->rules,
+    		'messages' => $this->messages
+    	];
+
+    	$validateCreate = $this->Validator($params);
+
+    	if ($validateCreate->fails()) {
+    		$this->codeResponse			= 422;
+    		$this->response['code'] 	= $this->codeResponse;
+    		$this->response['errors'] 	= $validateCreate->errors();
+    		$this->response['message'] 	= 'Han ocurrido algunos errores.';
+    	}else{
+    		$newUser = new User();
+    		$newUser->names = $request->input('names');
+    		$newUser->last_names = $request->input('last_names');
+    		$newUser->email = $request->input('email');
+    		$newUser->password = hash('sha256', $request->input('password'));
+    		$newUser->telephone = $request->input('telephone');
+
+    		if ($newUser->save()) {
+    			unset($newUser->password);
+    			$this->codeResponse 		= 201;
+    			$this->response['code']		= $this->codeResponse;
+    			$this->response['data']		= $newUser;
+    			$this->response['message'] 	= 'Usuario creado con éxito.';
+    		}else{
+    			$this->codeResponse 		= 500;
+    			$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
+    		}
+    	}
+
+    	return response()->json($this->response, $this->codeResponse);
+
     }
 }
