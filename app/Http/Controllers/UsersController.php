@@ -104,6 +104,47 @@ class UsersController extends Controller {
     	}
 
     	return response()->json($this->response, $this->codeResponse);
-
     }
+
+    public function delete (Request $request) {
+    	$rules = [
+    		'id_user' => 'required|integer',
+    	];
+
+    	$messages = [
+    		'id_user.required' => 'El id es requerido.',
+    		'id_user.integer' => 'El id debe ser númerico.',
+    	];
+
+    	$params = [
+    		'dataToValidate' => $request->all(),
+    		'rules' => $rules,
+    		'messages' => $messages
+    	];
+
+    	$validateDelete = $this->Validator($params);
+
+    	if ($validateDelete->fails()) {
+    		$this->codeResponse			= 422;
+    		$this->response['code'] 	= $this->codeResponse;
+    		$this->response['errors'] 	= $validateDelete->errors();
+    		$this->response['message'] 	= 'Han ocurrido algunos errores.';
+    	}else{
+    		$findUserToDelete = $this->User::find($request->id_user);
+
+    		if ($findUserToDelete->delete()) {
+    			$this->codeResponse 		= 201;
+    			$this->response['code']		= $this->codeResponse;
+    			$this->response['message'] 	= 'Usuario eliminado con éxito.';
+    		}else{
+    			$this->codeResponse 		= 500;
+    			$this->response['code']		= $this->codeResponse;
+    			$this->response['message'] 	= 'No se pudo eliminar el usuario, intentelo más tarde.';
+    		}
+    	}
+
+    	return response()->json($this->response, $this->codeResponse);
+    }
+
+    
 }
