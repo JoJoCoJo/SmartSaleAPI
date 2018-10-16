@@ -74,6 +74,6 @@ Route::prefix('api/v1')->group(function () {
 		Route::get('/', 'UsersController@getAll');
 		Route::get('/create', 'UsersController@create');
 		Route::get('/delete', 'UsersController@delete');
-		// Route::get('/update', 'UsersController@update');
+		Route::get('/update', 'UsersController@update');
 	});
 });
