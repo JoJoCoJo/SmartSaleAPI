@@ -18,6 +18,12 @@ class SalesController extends Controller {
 
 	// This indicates to the validator what have to validate.
 	private $rules = [
+		'date' => 'required|date',
+		'units_sales' => 'required|integer',
+		'type_sale' => 'required|integer',
+		'user_id' => 'required|integer',
+		'category_id' => 'nullable|integer',
+
 		/*'names' => 'required|min:3|max:50',
 		'last_names' => 'nullable|max:50',
 		'email' => 'required|email|min:5|max:80',
@@ -65,5 +71,9 @@ class SalesController extends Controller {
 		$this->response['message'] 	= 'Datos obtenido correctamente.';
 
 		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function create (Request $request) {
+		return $request->all();
 	}
 }
