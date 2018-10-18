@@ -77,4 +77,12 @@ Route::prefix('api/v1')->group(function () {
 		Route::get('/update', 'UsersController@update');
 		Route::get('/login', 'UsersController@login');
 	});
+
+	Route::prefix('/sales')->group(function () {
+		Route::get('/', 'SalesController@getAll');
+		/*Route::get('/create', 'UsersController@create');
+		Route::get('/delete', 'UsersController@delete');
+		Route::get('/update', 'UsersController@update');
+		Route::get('/login', 'UsersController@login');*/
+	});
 });
