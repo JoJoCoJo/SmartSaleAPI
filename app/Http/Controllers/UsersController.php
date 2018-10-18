@@ -193,6 +193,7 @@ class UsersController extends Controller {
     			'telephone.numeric' => 'El teléfono sólo debe contener números.',
     			'telephone.digits_between' => 'El teléfono debe tener al menos 7 números y máximo 15 números',
     		];
+
     		$paramsUpdateData = [
     			'dataToValidate' => $request->all(),
     			'rules' => $rules,
@@ -226,6 +227,67 @@ class UsersController extends Controller {
     			}
     		}
     	}
+
+    	return response()->json($this->response, $this->codeResponse);
+    }
+
+    public function login (Request $request) {
+
+		if ($request->input('username') !== NULL) {
+
+			$rules = [
+				'username' => 'email',
+			];
+
+			//This indicates to the validator what messages to show when an error occurs.
+			$messages = [
+				'username.email' => 'El correo proporcionado no es válido.',
+			];
+
+			$paramsEmail = [
+				'dataToValidate' => $request->all(),
+				'rules' => $rules,
+				'messages' => $messages
+			];
+
+			$validateEmail = $this->Validator($paramsEmail);
+
+			if ($validateEmail->fails()) {
+				$this->codeResponse			= 422;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['errors'] 	= $validateEmail->errors();
+				$this->response['message'] 	= 'Han ocurrido algunos errores.';
+			}else{
+				if ($request->input('password') !== NULL) {
+
+					$findUser = $this->User::where('email', '=', $request->input('username'))->get();
+					
+					if (count($findUser) > 0) {
+						if ($findUser[0]->password === $request->input('password')) {
+							$this->codeResponse 		= 200;
+							$this->response['code']		= $this->codeResponse;
+							$this->response['message'] 	= 'Credenciales correctas.';
+						}else{
+							$this->codeResponse 		= 500;
+							$this->response['code']		= $this->codeResponse;
+							$this->response['message'] 	= 'La contraseña no es válida.';
+						}
+					}else{
+						$this->codeResponse 		= 500;
+						$this->response['code']		= $this->codeResponse;
+						$this->response['message'] 	= 'No tenemos registro de: '.$request->input('username');
+					}
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'La contraseña es requerida.';
+				}
+			}
+		}else{
+			$this->codeResponse 		= 500;
+			$this->response['code']		= $this->codeResponse;
+			$this->response['message'] 	= 'El email es requerido.';
+		}
 
     	return response()->json($this->response, $this->codeResponse);
     }
