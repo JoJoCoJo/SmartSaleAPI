@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('id_sale');
             $table->date('date_sale');
-            $table->integer('units_sales');
+            $table->integer('total_units_sales');
             $table->tinyInteger('type_sale');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id_user')->on('users');

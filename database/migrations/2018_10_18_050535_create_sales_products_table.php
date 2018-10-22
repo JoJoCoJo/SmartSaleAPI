@@ -16,13 +16,11 @@ class CreateSalesProductsTable extends Migration
         Schema::create('sales_products', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-
             $table->unsignedInteger('sale_id');
             $table->foreign('sale_id')->references('id_sale')->on('sales');
-
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id_product')->on('products');
-            
+            $table->integer('units_sales_product');
             $table->timestamps();
         });
     }
