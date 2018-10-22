@@ -54,10 +54,7 @@ Route::prefix('api/v1')->group(function () {
 
 	//main url and urls to CRUD data on table categories
 	Route::prefix('/categories')->group(function () {
-		Route::get('/', 'CategoriesController@getAll');
-		Route::get('/*', 'CategoriesController@getAllWithAll');
-		Route::get('/products', 'CategoriesController@getAllWithProducts');
-		Route::get('/sales', 'CategoriesController@getAllWithSales');
+		Route::get('/{method?}', 'CategoriesController@getAll');
 		Route::get('/create', 'CategoriesController@create');
 		Route::get('/update', 'CategoriesController@update');
 		Route::get('/delete', 'CategoriesController@delete');

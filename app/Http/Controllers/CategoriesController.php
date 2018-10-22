@@ -47,12 +47,33 @@ class CategoriesController extends Controller {
     }
 
     // Get all categories without relationships
-    public function getAll () {
-    	$this->codeResponse = 200;
-    	$this->response['code'] 	= $this->codeResponse;
-		$this->response['data'] 	= $this->Category::All();
-		$this->response['message'] 	= 'Datos obtenido correctamente.';
+    public function getAll ($method = null) {
 
+    	if ($method !== null) {
+    		$newMethods = explode(',', $method);
+    		
+    		if (count($newMethods) > 1) {
+    			$allMethods = '$this->Category::';
+    			foreach ($newMethods as $methods) {
+    				$allMethods .= 'with("'.$methods.'")->';
+    			}
+    			$allMethods .= 'get()';
+    			$this->codeResponse = 200;
+    			$this->response['code'] 	= $this->codeResponse;
+    			$this->response['data'] 	= $allMethods();
+    			$this->response['message'] 	= 'Datos obtenido correctamente.';
+    		}else{
+				$this->codeResponse = 200;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['data'] 	= $this->Category::with($method)->get();
+				$this->response['message'] 	= 'Datos obtenido correctamente.';
+    		}
+    	}else{
+    		$this->codeResponse = 200;
+	    	$this->response['code'] 	= $this->codeResponse;
+			$this->response['data'] 	= $this->Category::All();
+			$this->response['message'] 	= 'Datos obtenido correctamente.';
+    	}
     	return response()->json($this->response, $this->codeResponse);
     }
 
