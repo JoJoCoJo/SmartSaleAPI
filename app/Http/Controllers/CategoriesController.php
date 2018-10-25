@@ -50,24 +50,13 @@ class CategoriesController extends Controller {
     public function getAll ($method = null) {
 
     	if ($method !== null) {
-    		$newMethods = explode(',', $method);
+    		$arrayMethods = explode(',', $method);
     		
-    		if (count($newMethods) > 1) {
-    			$allMethods = '$this->Category::';
-    			foreach ($newMethods as $methods) {
-    				$allMethods .= 'with("'.$methods.'")->';
-    			}
-    			$allMethods .= 'get()';
-    			$this->codeResponse = 200;
-    			$this->response['code'] 	= $this->codeResponse;
-    			$this->response['data'] 	= $allMethods();
-    			$this->response['message'] 	= 'Datos obtenido correctamente.';
-    		}else{
-				$this->codeResponse = 200;
-				$this->response['code'] 	= $this->codeResponse;
-				$this->response['data'] 	= $this->Category::with($method)->get();
-				$this->response['message'] 	= 'Datos obtenido correctamente.';
-    		}
+    		$this->codeResponse = 200;
+    		$this->response['code'] 	= $this->codeResponse;
+    		$this->response['data'] 	= $this->Category::with($arrayMethods)->get();
+    		$this->response['message'] 	= 'Datos obtenido correctamente.';
+
     	}else{
     		$this->codeResponse = 200;
 	    	$this->response['code'] 	= $this->codeResponse;
