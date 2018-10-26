@@ -81,4 +81,12 @@ Route::prefix('api/v1')->group(function () {
 		Route::get('/delete', 'SalesController@delete');
 		Route::get('/update', 'SalesController@update');
 	});
+
+	Route::prefix('/sales_products')->group(function () {
+		Route::get('/read/{method?}', 'SaleProductController@getAll');
+		/*Route::get('/create', 'SaleProductController@create');
+		Route::get('/delete', 'SaleProductController@delete');
+		Route::get('/update', 'SaleProductController@update');*/
+	});
+
 });
