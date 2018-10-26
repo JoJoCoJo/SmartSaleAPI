@@ -6,8 +6,9 @@ use App\Product;
 use App\User;
 use App\Sale;
 use App\SalesProduct;
+use App\Forecast;
 
-class CategoriesTableSeeder extends Seeder {
+class GeneralSeeder extends Seeder {
     /**
      * Run the database seeds.
      *
@@ -19,5 +20,6 @@ class CategoriesTableSeeder extends Seeder {
         factory(User::class, 50)->create();
         factory(Sale::class, 500)->create();
         factory(SalesProduct::class, 1000)->create();
+        factory(Forecast::class, 1500)->create();
     }
 }
