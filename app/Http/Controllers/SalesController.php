@@ -146,4 +146,64 @@ class SalesController extends Controller {
 
 		return response()->json($this->response, $this->codeResponse);
 	}
+
+	public function update (Request $request) {
+		$rules = [
+			'id_sale' => 'required|integer',
+		];
+
+		$messages = [
+			'id_sale.required' => 'El id es requerido.',
+			'id_sale.integer' => 'El id debe ser númerico.',
+		];
+
+		$paramsId = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateUpdateID = $this->Validator($paramsId);
+
+		if ($validateUpdateID->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateUpdateID->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$paramsUpdateData = [
+				'dataToValidate' => $request->all(),
+				'rules' => $this->rules,
+				'messages' => $this->messages
+			];
+
+			$validateUpdateData = $this->Validator($paramsUpdateData);
+
+			if ($validateUpdateData->fails()) {
+				$this->codeResponse			= 422;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['errors'] 	= $validateUpdateData->errors();
+				$this->response['message'] 	= 'Han ocurrido algunos errores.';
+			}else{
+				$findSaleToUpdate 					 = $this->Sale::find($request->id_sale);
+				$findSaleToUpdate->date_sale 		 = $request->input('date_sale');
+				$findSaleToUpdate->total_units_sales = $request->input('total_units_sales');
+				$findSaleToUpdate->type_sale 		 = $request->input('type_sale');
+				$findSaleToUpdate->user_id 			 = $request->input('user_id');
+				$findSaleToUpdate->category_id 		 = $request->input('category_id');
+
+				if ($findSaleToUpdate->save()) {
+					$this->codeResponse			= 202;
+					$this->response['code'] 	= $this->codeResponse;
+					$this->response['message'] 	= 'Registro actualizado con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo actualizar el registro, intentelo más tarde.';
+				}
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
 }
