@@ -64,7 +64,7 @@ class SaleProductController extends Controller {
 
             $this->codeResponse = 200;
             $this->response['code']     = $this->codeResponse;
-            $this->response['data']     = $this->SalesProduct::with($arrayMethods)->get();
+            $this->response['data']     = $this->SalesProduct::with($arrayMethods)->orderBy('sale_id', 'ASC')->get();
             $this->response['message']  = 'Datos obtenidos correctamente.';
         }else{
             $this->codeResponse = 200;
