@@ -54,21 +54,21 @@ Route::prefix('api/v1')->group(function () {
 
 	//main url and urls to CRUD data on table categories
 	Route::prefix('/categories')->group(function () {
-		Route::get('/{method?}', 'CategoriesController@getAll');
+		Route::get('/read/{method?}', 'CategoriesController@getAll');
 		Route::get('/create', 'CategoriesController@create');
 		Route::get('/update', 'CategoriesController@update');
 		Route::get('/delete', 'CategoriesController@delete');
 	});
 
 	Route::prefix('/products')->group(function () {
-		Route::get('/{method?}', 'ProductsController@getAll');
+		Route::get('/read/{method?}', 'ProductsController@getAll');
 		Route::get('/create', 'ProductsController@create');
 		Route::get('/delete', 'ProductsController@delete');
 		Route::get('/update', 'ProductsController@update');
 	});
 
 	Route::prefix('/users')->group(function () {
-		Route::get('/{method?}', 'UsersController@getAll');
+		Route::get('/read/{method?}', 'UsersController@getAll');
 		Route::get('/create', 'UsersController@create');
 		Route::get('/delete', 'UsersController@delete');
 		Route::get('/update', 'UsersController@update');
@@ -76,8 +76,8 @@ Route::prefix('api/v1')->group(function () {
 	});
 
 	Route::prefix('/sales')->group(function () {
-		Route::get('/{method?}', 'SalesController@getAll');
-		Route::get('/create', 'UsersController@create');
+		Route::get('/read/{method?}', 'SalesController@getAll');
+		Route::get('/create', 'SalesController@create');
 		/*Route::get('/delete', 'UsersController@delete');
 		Route::get('/update', 'UsersController@update');*/
 	});
