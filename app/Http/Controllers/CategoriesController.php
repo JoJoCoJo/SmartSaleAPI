@@ -55,14 +55,14 @@ class CategoriesController extends Controller {
     		$this->codeResponse = 200;
     		$this->response['code'] 	= $this->codeResponse;
     		$this->response['data'] 	= $this->Category::with($arrayMethods)->get();
-    		$this->response['message'] 	= 'Datos obtenido correctamente.';
-
+    		$this->response['message'] 	= 'Datos obtenidos correctamente.';
     	}else{
     		$this->codeResponse = 200;
 	    	$this->response['code'] 	= $this->codeResponse;
 			$this->response['data'] 	= $this->Category::All();
-			$this->response['message'] 	= 'Datos obtenido correctamente.';
+			$this->response['message'] 	= 'Datos obtenidos correctamente.';
     	}
+
     	return response()->json($this->response, $this->codeResponse);
     }
 
@@ -71,7 +71,7 @@ class CategoriesController extends Controller {
     	$this->codeResponse = 200;
     	$this->response['code'] 	= $this->codeResponse;
 		$this->response['data'] 	= $this->Category::with('products')->get();
-		$this->response['message'] 	= 'Datos obtenido correctamente.';
+		$this->response['message'] 	= 'Datos obtenidos correctamente.';
 
     	return response()->json($this->response, $this->codeResponse);
     }
@@ -81,7 +81,7 @@ class CategoriesController extends Controller {
     	$this->codeResponse = 200;
     	$this->response['code'] 	= $this->codeResponse;
 		$this->response['data'] 	= $this->Category::with('sales')->get();
-		$this->response['message'] 	= 'Datos obtenido correctamente.';
+		$this->response['message'] 	= 'Datos obtenidos correctamente.';
 
     	return response()->json($this->response, $this->codeResponse);
     }
@@ -91,7 +91,7 @@ class CategoriesController extends Controller {
     	$this->codeResponse = 200;
     	$this->response['code'] 	= $this->codeResponse;
 		$this->response['data'] 	= $this->Category::with('products')->with('sales')->get();
-		$this->response['message'] 	= 'Datos obtenido correctamente.';
+		$this->response['message'] 	= 'Datos obtenidos correctamente.';
 
     	return response()->json($this->response, $this->codeResponse);
     }

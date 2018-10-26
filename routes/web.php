@@ -61,14 +61,14 @@ Route::prefix('api/v1')->group(function () {
 	});
 
 	Route::prefix('/products')->group(function () {
-		Route::get('/', 'ProductsController@getAll');
+		Route::get('/{method?}', 'ProductsController@getAll');
 		Route::get('/create', 'ProductsController@create');
 		Route::get('/delete', 'ProductsController@delete');
 		Route::get('/update', 'ProductsController@update');
 	});
 
 	Route::prefix('/users')->group(function () {
-		Route::get('/', 'UsersController@getAll');
+		Route::get('/{method?}', 'UsersController@getAll');
 		Route::get('/create', 'UsersController@create');
 		Route::get('/delete', 'UsersController@delete');
 		Route::get('/update', 'UsersController@update');
@@ -76,7 +76,7 @@ Route::prefix('api/v1')->group(function () {
 	});
 
 	Route::prefix('/sales')->group(function () {
-		Route::get('/', 'SalesController@getAll');
+		Route::get('/{method?}', 'SalesController@getAll');
 		Route::get('/create', 'UsersController@create');
 		/*Route::get('/delete', 'UsersController@delete');
 		Route::get('/update', 'UsersController@update');*/

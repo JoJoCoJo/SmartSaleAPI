@@ -64,12 +64,20 @@ class SalesController extends Controller {
 	}
 
 	// Get all products without relationships
-	public function getAll () {
-		$this->codeResponse = 200;
-		$this->response['code'] 	= $this->codeResponse;
-		$this->response['data'] 	= $this->Sale::All();
-		$this->response['message'] 	= 'Datos obtenido correctamente.';
-
+	public function getAll ($method = null) {
+		if ($method !== null) {
+			$arrayMethods = explode(',', $method);
+			
+			$this->codeResponse = 200;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['data'] 	= $this->Sale::with($arrayMethods)->get();
+			$this->response['message'] 	= 'Datos obtenidos correctamente.';
+		}else{
+			$this->codeResponse = 200;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['data'] 	= $this->Sale::All();
+			$this->response['message'] 	= 'Datos obtenidos correctamente.';
+		}
 		return response()->json($this->response, $this->codeResponse);
 	}
 
