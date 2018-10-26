@@ -8,7 +8,7 @@ use App\Sale;
 use App\SalesProduct;
 use App\Forecast;
 
-class CategoriesTableSeeder extends Seeder {
+class GeneralSeeder extends Seeder {
     /**
      * Run the database seeds.
      *
