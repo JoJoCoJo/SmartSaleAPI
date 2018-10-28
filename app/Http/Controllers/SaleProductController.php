@@ -100,4 +100,42 @@ class SaleProductController extends Controller {
 
     	return response()->json($this->response, $this->codeResponse);
     }
+
+    public function delete (Request $request) {
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $this->rules,
+			'messages' => $this->messages
+		];
+
+		$validateDelete = $this->Validator($params);
+
+		if ($validateDelete->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateDelete->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$findSaleProductToDelete = $this->SalesProduct::where('sale_id', '=', $request->sale_id)->where('product_id', '=', $request->product_id)->where('units_sales_product', '=', $request->units_sales_product);
+
+			if (count($findSaleProductToDelete->get())) {
+				if ($findSaleProductToDelete->delete()) {
+					$this->codeResponse 		= 201;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'Producto eliminado de la venta con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo eliminar la venta, intentelo más tarde.';
+				}
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'No sé encontro el registro por eliminar. Puede que ya allá eliminado.';
+			}
+		}
+
+
+		return response()->json($this->response, $this->codeResponse);
+    }
 }
