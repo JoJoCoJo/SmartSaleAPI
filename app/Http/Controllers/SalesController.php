@@ -18,35 +18,24 @@ class SalesController extends Controller {
 
 	// This indicates to the validator what have to validate.
 	private $rules = [
-		'date' => 'required|date',
-		'units_sales' => 'required|integer',
+		'date_sale' => 'required|date',
+		'total_units_sales' => 'required|integer',
 		'type_sale' => 'required|integer',
 		'user_id' => 'required|integer',
 		'category_id' => 'nullable|integer',
-
-		/*'names' => 'required|min:3|max:50',
-		'last_names' => 'nullable|max:50',
-		'email' => 'required|email|min:5|max:80',
-		'password' => 'required|min:7|max:15|alpha_num',
-		'telephone' => 'nullable|numeric|digits_between:7,15'*/
 	];
 
 	//This indicates to the validator what messages to show when an error occurs.
 	private $messages = [
-		/*'names.required' => 'El nombre no puede quedar vacío.',
-		'names.min' => 'El nombre debe tener al menos 3 carácteres.',
-		'names.max' => 'El nombre debe tener máximo 50 carácteres.',
-		'last_names.max' => 'Los apellidos deben tener máximo 50 carácteres.',
-		'email.required' => 'El correo no puede quedar vacío.',
-		'email.email' => 'El correo proporcionado no es válido.',
-		'email.min' => 'El correo debe tener al menos 5 carácteres.',
-		'email.max' => 'El correo debe tener máximo 80 carácteres.',
-		'password.required' => 'La contraseña no puede quedar vacía.',
-		'password.min' => 'La contraseña debe tener al menos 7 carácteres.',
-		'password.max' => 'La contraseña debe tener máximo 15 carácteres.',
-		'password.alpha_num' => 'La contraseña puede ser letras y números, no debe tener carácteres especiales. ej. (/*_.)',
-		'telephone.numeric' => 'El teléfono sólo debe contener números.',
-		'telephone.digits_between' => 'El teléfono debe tener al menos 7 números y máximo 15 números',*/
+		'date_sale.required' => 'La fecha no puede quedar vacío.',
+		'date_sale.date' => 'El formato de la fecha no válido.',
+		'total_units_sales.required' => 'El total de productos vendidos no puede quedar vació.',
+		'total_units_sales.integer' => 'El total de productos vendidos debe ser númerico.',
+		'type_sale.required' => 'Debe seleccionar un tipo de venta.',
+		'type_sale.integer' => 'El tipo de venta debe ser númerico.',
+		'user_id.required' => 'El usuario es requerido.',
+		'user_id.integer' => 'El id del usuario debe ser númerico.',
+		'category_id.integer' => 'El id de la categoria debe ser númerico.',
 	];
 
 	private function Validator (Array $params) {
@@ -82,6 +71,139 @@ class SalesController extends Controller {
 	}
 
 	public function create (Request $request) {
-		return $request->all();
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $this->rules,
+			'messages' => $this->messages
+		];
+
+		$validateCreate = $this->Validator($params);
+
+		if ($validateCreate->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateCreate->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$newSale 			= new Sale();
+			$newSale->date_sale = $request->input('date_sale');
+			$newSale->total_units_sales = $request->input('total_units_sales');
+			$newSale->type_sale = $request->input('type_sale');
+			$newSale->user_id = $request->input('user_id');
+			$newSale->category_id = $request->input('category_id');
+
+			if ($newSale->save()) {
+				unset($newSale->password);
+				$this->codeResponse 		= 201;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['data']		= $newSale;
+				$this->response['message'] 	= 'Venta registrada con éxito.';
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
+			}			
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function delete (Request $request) {
+		$rules = [
+			'id_sale' => 'required|integer',
+		];
+
+		$messages = [
+			'id_sale.required' => 'El id es requerido.',
+			'id_sale.integer' => 'El id debe ser númerico.',
+		];
+
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateDelete = $this->Validator($params);
+
+		if ($validateDelete->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateDelete->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$findSaleToDelete = $this->Sale::find($request->id_sale);
+
+			if ($findSaleToDelete->delete()) {
+				$this->codeResponse 		= 201;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'Venta eliminada con éxito.';
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'No se pudo eliminar la venta, intentelo más tarde.';
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function update (Request $request) {
+		$rules = [
+			'id_sale' => 'required|integer',
+		];
+
+		$messages = [
+			'id_sale.required' => 'El id es requerido.',
+			'id_sale.integer' => 'El id debe ser númerico.',
+		];
+
+		$paramsId = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateUpdateID = $this->Validator($paramsId);
+
+		if ($validateUpdateID->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateUpdateID->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$paramsUpdateData = [
+				'dataToValidate' => $request->all(),
+				'rules' => $this->rules,
+				'messages' => $this->messages
+			];
+
+			$validateUpdateData = $this->Validator($paramsUpdateData);
+
+			if ($validateUpdateData->fails()) {
+				$this->codeResponse			= 422;
+				$this->response['code'] 	= $this->codeResponse;
+				$this->response['errors'] 	= $validateUpdateData->errors();
+				$this->response['message'] 	= 'Han ocurrido algunos errores.';
+			}else{
+				$findSaleToUpdate 					 = $this->Sale::find($request->id_sale);
+				$findSaleToUpdate->date_sale 		 = $request->input('date_sale');
+				$findSaleToUpdate->total_units_sales = $request->input('total_units_sales');
+				$findSaleToUpdate->type_sale 		 = $request->input('type_sale');
+				$findSaleToUpdate->user_id 			 = $request->input('user_id');
+				$findSaleToUpdate->category_id 		 = $request->input('category_id');
+
+				if ($findSaleToUpdate->save()) {
+					$this->codeResponse			= 202;
+					$this->response['code'] 	= $this->codeResponse;
+					$this->response['message'] 	= 'Registro actualizado con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo actualizar el registro, intentelo más tarde.';
+				}
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
 	}
 }
