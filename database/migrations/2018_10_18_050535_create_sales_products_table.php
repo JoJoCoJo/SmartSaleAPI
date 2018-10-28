@@ -20,6 +20,7 @@ class CreateSalesProductsTable extends Migration
             $table->foreign('sale_id')->references('id_sale')->on('sales');
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id_product')->on('products');
+            $table->primary(['sale_id', 'product_id']);
             $table->integer('units_sales_product');
             $table->timestamps();
         });

@@ -19,7 +19,7 @@ class GeneralSeeder extends Seeder {
         factory(Product::class, 100)->create();
         factory(User::class, 50)->create();
         factory(Sale::class, 500)->create();
-        factory(SalesProduct::class, 1000)->create();
         factory(Forecast::class, 1500)->create();
+        factory(SalesProduct::class, 1000)->create();
     }
 }
