@@ -104,7 +104,7 @@ class SalesController extends Controller {
 			}			
 		}
 
-		return response()->json($this->response, $this->codeResponse);;
+		return response()->json($this->response, $this->codeResponse);
 	}
 
 	public function delete (Request $request) {
