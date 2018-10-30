@@ -18,24 +18,19 @@ class ForecastController extends Controller {
 
 	// This indicates to the validator what have to validate.
 	private $rules = [
-		/*'date_sale' => 'required|date',
-		'total_units_sales' => 'required|integer',
-		'type_sale' => 'required|integer',
-		'user_id' => 'required|integer',
-		'category_id' => 'nullable|integer',*/
+		'type_forecast' => 'required|integer',
+		'forecastData' => 'required|json',
+		'sale_id' => 'required|integer',
 	];
 
 	//This indicates to the validator what messages to show when an error occurs.
 	private $messages = [
-		/*'date_sale.required' => 'La fecha no puede quedar vacío.',
-		'date_sale.date' => 'El formato de la fecha no válido.',
-		'total_units_sales.required' => 'El total de productos vendidos no puede quedar vació.',
-		'total_units_sales.integer' => 'El total de productos vendidos debe ser númerico.',
-		'type_sale.required' => 'Debe seleccionar un tipo de venta.',
-		'type_sale.integer' => 'El tipo de venta debe ser númerico.',
-		'user_id.required' => 'El usuario es requerido.',
-		'user_id.integer' => 'El id del usuario debe ser númerico.',
-		'category_id.integer' => 'El id de la categoria debe ser númerico.',*/
+		'type_forecast.required' => 'Debe seleccionar un tipo de pronóstico.',
+		'type_forecast.integer' => 'El tipo de pronóstico debe ser númerico.',
+		'forecastData.required' => 'Los datos del pronóstico son requeridos.',
+		'forecastData.json' => 'Los datos del pronóstico deben ser formato JSON.',
+		'sale_id.required' => 'La venta es requerida.',
+		'sale_id.integer' => 'El id de la venta debe ser númerico.',
 	];
 
 	private function Validator (Array $params) {
@@ -67,6 +62,40 @@ class ForecastController extends Controller {
 			$this->response['data'] 	= $this->Forecast::All();
 			$this->response['message'] 	= 'Datos obtenidos correctamente.';
 		}
+		return response()->json($this->response, $this->codeResponse);
+	}
+
+	public function create (Request $request) {
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $this->rules,
+			'messages' => $this->messages
+		];
+
+		$validateCreate = $this->Validator($params);
+
+		if ($validateCreate->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateCreate->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$newForecast 			= new Forecast();
+			$newForecast->type_forecast = $request->input('type_forecast');
+			$newForecast->forecastData = $request->input('forecastData');
+			$newForecast->sale_id = $request->input('sale_id');
+
+			if ($newForecast->save()) {
+				$this->codeResponse 		= 201;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['data']		= $newForecast;
+				$this->response['message'] 	= 'Registro realizado con éxito.';
+			}else{
+				$this->codeResponse 		= 500;
+				$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
+			}			
+		}
+
 		return response()->json($this->response, $this->codeResponse);
 	}
 }
