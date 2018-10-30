@@ -98,4 +98,49 @@ class ForecastController extends Controller {
 
 		return response()->json($this->response, $this->codeResponse);
 	}
+
+	public function delete (Request $request) {
+		$rules = [
+			'id_forecast' => 'required|integer',
+		];
+
+		$messages = [
+			'id_forecast.required' => 'El id es requerido.',
+			'id_forecast.integer' => 'El id debe ser númerico.',
+		];
+
+		$params = [
+			'dataToValidate' => $request->all(),
+			'rules' => $rules,
+			'messages' => $messages
+		];
+
+		$validateDelete = $this->Validator($params);
+
+		if ($validateDelete->fails()) {
+			$this->codeResponse			= 422;
+			$this->response['code'] 	= $this->codeResponse;
+			$this->response['errors'] 	= $validateDelete->errors();
+			$this->response['message'] 	= 'Han ocurrido algunos errores.';
+		}else{
+			$findForecastToDelete = $this->Forecast::find($request->id_forecast);
+			if (count($findForecastToDelete) == 0) {
+				$this->codeResponse 		= 500;
+				$this->response['code']		= $this->codeResponse;
+				$this->response['message'] 	= 'No sé encontro el registro por eliminar. Puede que ya se haya eliminado.';
+			}else{
+				if ($findForecastToDelete->delete()) {
+					$this->codeResponse 		= 201;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'Pronóstico eliminado con éxito.';
+				}else{
+					$this->codeResponse 		= 500;
+					$this->response['code']		= $this->codeResponse;
+					$this->response['message'] 	= 'No se pudo eliminar la venta, intentelo más tarde.';
+				}
+			}
+		}
+
+		return response()->json($this->response, $this->codeResponse);
+	}
 }
