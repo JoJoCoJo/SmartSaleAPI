@@ -131,7 +131,7 @@ class SaleProductController extends Controller {
 			}else{
 				$this->codeResponse 		= 500;
 				$this->response['code']		= $this->codeResponse;
-				$this->response['message'] 	= 'No sé encontro el registro por eliminar. Puede que ya allá eliminado.';
+				$this->response['message'] 	= 'No sé encontro el registro por eliminar. Puede que ya se haya eliminado.';
 			}
 		}
 

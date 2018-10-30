@@ -86,7 +86,12 @@ Route::prefix('api/v1')->group(function () {
 		Route::get('/read/{method?}', 'SaleProductController@getAll');
 		Route::get('/create', 'SaleProductController@create');
 		Route::get('/delete', 'SaleProductController@delete');
-		// Route::get('/update', 'SaleProductController@update');
+	});
+
+	Route::prefix('/forecast')->group(function () {
+		Route::get('/read/{method?}', 'ForecastController@getAll');
+		Route::get('/create', 'ForecastController@create');
+		Route::get('/delete', 'ForecastController@delete');
 	});
 
 });
