@@ -93,23 +93,30 @@ class UsersController extends Controller {
     		$this->response['errors'] 	= $validateCreate->errors();
     		$this->response['message'] 	= 'Han ocurrido algunos errores.';
     	}else{
-    		$newUser = new User();
-    		$newUser->names = $request->input('names');
-    		$newUser->last_names = $request->input('last_names');
-    		$newUser->email = $request->input('email');
-    		$newUser->password = $request->input('password');
-    		$newUser->telephone = $request->input('telephone');
+            $findUserToBeforeCreate = $this->User::where('email', '=', $request->input('email'));
+            
+            if (count($findUserToBeforeCreate->get()) == 0) {
+                $newUser = new User();
+                $newUser->names = $request->input('names');
+                $newUser->last_names = $request->input('last_names');
+                $newUser->email = $request->input('email');
+                $newUser->password = $request->input('password');
+                $newUser->telephone = $request->input('telephone');
 
-    		if ($newUser->save()) {
-    			unset($newUser->password);
-    			$this->codeResponse 		= 201;
-    			$this->response['code']		= $this->codeResponse;
-    			$this->response['data']		= $newUser;
-    			$this->response['message'] 	= 'Usuario creado con éxito.';
-    		}else{
-    			$this->codeResponse 		= 500;
-    			$this->response['message'] 	= 'No se pudo completar el registro, intentelo más tarde.';
-    		}
+                if ($newUser->save()) {
+                    unset($newUser->password);
+                    $this->codeResponse         = 201;
+                    $this->response['code']     = $this->codeResponse;
+                    $this->response['data']     = $newUser;
+                    $this->response['message']  = 'Usuario creado con éxito.';
+                }else{
+                    $this->codeResponse         = 500;
+                    $this->response['message']  = 'No se pudo completar el registro, intentelo más tarde.';
+                }
+            }else{
+                $this->codeResponse         = 500;
+                $this->response['message']  = 'No se pudo completar el registro, el usuario ya existe.';
+            }
     	}
 
     	return response()->json($this->response, $this->codeResponse);
