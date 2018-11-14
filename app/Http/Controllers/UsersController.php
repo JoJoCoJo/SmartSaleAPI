@@ -63,10 +63,35 @@ class UsersController extends Controller {
         
         if ($method !== null) {
             $arrayMethods = explode(',', $method);
+            $index = array_search('SalesProducts', $arrayMethods);
 
             $this->codeResponse = 200;
             $this->response['code']     = $this->codeResponse;
-            $this->response['data']     = $this->User::where('id_user', '=', $id)->with($arrayMethods)->get();
+
+            if ($index !== null) {
+                unset($arrayMethods[$index]);
+                $this->response['data']     = $this->User::where('id_user', '=', $id)->with($arrayMethods)->get();
+                $SalesProducts = $this->User::where('id_user', '=', $id)->join('sales', 'users.id_user', '=', 'sales.user_id')->join('sales_products', 'sales.id_sale', '=', 'sales_products.sale_id')->get();
+                for ($i=0; $i < count($SalesProducts); $i++) { 
+                    unset($SalesProducts[$i]->id_user);
+                    unset($SalesProducts[$i]->names);
+                    unset($SalesProducts[$i]->last_names);
+                    unset($SalesProducts[$i]->email);
+                    unset($SalesProducts[$i]->password);
+                    unset($SalesProducts[$i]->telephone);
+                    unset($SalesProducts[$i]->created_at);
+                    unset($SalesProducts[$i]->updated_at);
+                    unset($SalesProducts[$i]->id_sale);
+                    unset($SalesProducts[$i]->date_sale);
+                    unset($SalesProducts[$i]->total_units_sales);
+                    unset($SalesProducts[$i]->type_sale);
+                    unset($SalesProducts[$i]->user_id);
+                    unset($SalesProducts[$i]->category_id);
+                }
+                $this->response['data'][0]['sales_products'] = $SalesProducts;
+            }else{
+                $this->response['data']     = $this->User::where('id_user', '=', $id)->with($arrayMethods)->get();
+            }
             $this->response['message']  = 'Datos obtenidos correctamente.';
         }else{
             $this->codeResponse = 200;
