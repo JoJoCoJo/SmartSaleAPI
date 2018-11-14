@@ -19,6 +19,8 @@ class CreateForecastsTable extends Migration
             $table->increments('id_forecast');
             $table->tinyInteger('type_forecast');
             $table->longText('forecastData');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id_user')->on('users');
             $table->unsignedInteger('sale_id');
             $table->foreign('sale_id')->references('id_sale')->on('sales');
             $table->timestamps();

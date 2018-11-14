@@ -22,6 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('image', 100)->nullable();
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id_category')->on('categories');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id_user')->on('users');
             $table->timestamps();
         });
     }

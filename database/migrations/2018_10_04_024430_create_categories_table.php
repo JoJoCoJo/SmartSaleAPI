@@ -19,6 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->increments('id_category');
             $table->string('name', 50);
             $table->string('description', 150)->nullable();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id_user')->on('users');
             $table->timestamps();
         });
     }
