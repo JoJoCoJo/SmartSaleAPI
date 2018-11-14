@@ -22,6 +22,7 @@ class ProductsController extends Controller {
 		'name' => 'required|min:3|max:50',
 		'price' => 'required|regex:/([0-9]{1,14}\.[0-9]{1,2})/',
 		'image' => 'max:100',
+		'user_id' => 'required|integer',
 		'category_id' => 'nullable|integer'
 	];
 
@@ -33,6 +34,8 @@ class ProductsController extends Controller {
 		'price.required' => 'El precio no quedar vacío.',
 		'price.regex' => 'El precio no tiene el formato correcto. ej. 57.99 ',
 		'image.max' => 'La url de la imagen debe tener máximo 100 carácteres.',
+		'user_id.required' => 'El usuario es requerido.',
+		'user_id.integer' => 'El id del usuario debe ser númerico.',
 		'category_id.integer' => 'El id debe ser númerico.'
 	];
 

@@ -20,6 +20,7 @@ class ForecastController extends Controller {
 	private $rules = [
 		'type_forecast' => 'required|integer',
 		'forecastData' => 'required|json',
+		'user_id' => 'required|integer',
 		'sale_id' => 'required|integer',
 	];
 
@@ -29,6 +30,8 @@ class ForecastController extends Controller {
 		'type_forecast.integer' => 'El tipo de pronóstico debe ser númerico.',
 		'forecastData.required' => 'Los datos del pronóstico son requeridos.',
 		'forecastData.json' => 'Los datos del pronóstico deben ser formato JSON.',
+		'user_id.required' => 'El usuario es requerido.',
+		'user_id.integer' => 'El id del usuario debe ser númerico.',
 		'sale_id.required' => 'La venta es requerida.',
 		'sale_id.integer' => 'El id de la venta debe ser númerico.',
 	];

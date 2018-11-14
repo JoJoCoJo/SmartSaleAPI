@@ -20,7 +20,8 @@ class CategoriesController extends Controller {
     // This indicates to the validator what have to validate.
     private $rules = [
     	'name' => 'required|min:5|max:50',
-    	'description' => 'nullable|min:10|max:150'
+    	'description' => 'nullable|min:10|max:150',
+		'user_id' => 'required|integer',
     ];
 
     //This indicates to the validator what messages to show when an error occurs.
@@ -29,7 +30,9 @@ class CategoriesController extends Controller {
     	'name.min' => 'El nombre debe tener al menos 5 carácteres.',
     	'name.max' => 'El nombre debe tener máximo 50 carácteres.',
     	'description.min' => 'La descripción debe tener menos 10 carácteres.',
-    	'description.max' => 'La descripción debe tener máximo 150 carácteres.'
+    	'description.max' => 'La descripción debe tener máximo 150 carácteres.',
+    	'user_id.required' => 'El usuario es requerido.',
+		'user_id.integer' => 'El id del usuario debe ser númerico.',
     ];
 
     private function Validator (Array $params) {
