@@ -68,7 +68,7 @@ Route::prefix('api/v1')->group(function () {
 	});
 
 	Route::prefix('/users')->group(function () {
-		Route::get('/read/{method?}', 'UsersController@getAll');
+		Route::get('/read/{id}/{method?}', 'UsersController@getAll');
 		Route::get('/create', 'UsersController@create');
 		Route::get('/delete', 'UsersController@delete');
 		Route::get('/update', 'UsersController@update');

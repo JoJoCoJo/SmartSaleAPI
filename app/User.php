@@ -11,4 +11,16 @@ class User extends Model {
     public function sales () {
     	return $this->hasMany(Sale::class, 'user_id', 'id_user');
     }
+
+    public function products () {
+    	return $this->hasMany(Product::class, 'user_id', 'id_user');
+    }
+
+    public function categories () {
+    	return $this->hasMany(Category::class, 'user_id', 'id_user');
+    }
+
+    public function forecasts () {
+    	return $this->hasMany(Forecast::class, 'user_id', 'id_user');
+    }
 }

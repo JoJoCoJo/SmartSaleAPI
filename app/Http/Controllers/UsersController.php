@@ -59,14 +59,14 @@ class UsersController extends Controller {
     }
 
         // Get all products without relationships
-    public function getAll ($method = null) {
+    public function getAll ($id, $method = null) {
         
         if ($method !== null) {
             $arrayMethods = explode(',', $method);
 
             $this->codeResponse = 200;
             $this->response['code']     = $this->codeResponse;
-            $this->response['data']     = $this->User::with($arrayMethods)->get();
+            $this->response['data']     = $this->User::where('id_user', '=', $id)->with($arrayMethods)->get();
             $this->response['message']  = 'Datos obtenidos correctamente.';
         }else{
             $this->codeResponse = 200;
