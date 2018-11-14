@@ -64,11 +64,11 @@ class UsersController extends Controller {
         if ($method !== null) {
             $arrayMethods = explode(',', $method);
             $index = array_search('SalesProducts', $arrayMethods);
-
+            
             $this->codeResponse = 200;
             $this->response['code']     = $this->codeResponse;
 
-            if ($index !== null) {
+            if ($index !== FALSE) {
                 unset($arrayMethods[$index]);
                 $this->response['data']     = $this->User::where('id_user', '=', $id)->with($arrayMethods)->get();
                 $SalesProducts = $this->User::where('id_user', '=', $id)->join('sales', 'users.id_user', '=', 'sales.user_id')->join('sales_products', 'sales.id_sale', '=', 'sales_products.sale_id')->get();
