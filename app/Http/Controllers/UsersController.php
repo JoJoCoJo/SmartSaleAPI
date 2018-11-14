@@ -71,7 +71,7 @@ class UsersController extends Controller {
         }else{
             $this->codeResponse = 200;
             $this->response['code']     = $this->codeResponse;
-            $this->response['data']     = $this->User::All();
+            $this->response['data']     = $this->User::where('id_user', '=', $id)->get();
             $this->response['message']  = 'Datos obtenidos correctamente.';
         }
 
