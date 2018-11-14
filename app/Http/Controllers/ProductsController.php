@@ -92,6 +92,7 @@ class ProductsController extends Controller {
 			$newProduct->name 		 = $request->input('name');
 			$newProduct->price 		 = $request->input('price');
 			$newProduct->image 		 = $request->input('image');
+			$newProduct->user_id 	 = $request->input('user_id');
 			$newProduct->category_id = $request->input('category_id');
 
 			if ($newProduct->save()) {

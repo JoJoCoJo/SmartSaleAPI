@@ -88,6 +88,7 @@ class CategoriesController extends Controller {
 			$newCategory = new Category();
 			$newCategory->name = $request->input('name');
 			$newCategory->description = $request->input('description');
+			$newCategory->user_id = $request->input('user_id');
 
 			if ($newCategory->save()) {
 				$this->codeResponse 		= 201;

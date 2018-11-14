@@ -86,6 +86,7 @@ class ForecastController extends Controller {
 			$newForecast 			= new Forecast();
 			$newForecast->type_forecast = $request->input('type_forecast');
 			$newForecast->forecastData = $request->input('forecastData');
+			$newForecast->user_id = $request->input('user_id');
 			$newForecast->sale_id = $request->input('sale_id');
 
 			if ($newForecast->save()) {
