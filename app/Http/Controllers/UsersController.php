@@ -306,8 +306,10 @@ class UsersController extends Controller {
 					
 					if (count($findUser) > 0) {
 						if ($findUser[0]->password === $request->input('password')) {
+                            unset($findUser[0]->password);
 							$this->codeResponse 		= 200;
 							$this->response['code']		= $this->codeResponse;
+                            $this->response['data']     = $findUser;
 							$this->response['message'] 	= 'Credenciales correctas.';
 						}else{
 							$this->codeResponse 		= 500;
